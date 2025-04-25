@@ -30,6 +30,7 @@ CMD Terminal database:
 
 CMD Terminal flask-migrate commands:
 - Docker exec -it [container name]-[service-name-app]-1 /bin/sh - This is a connection to the web app to perform flask db migrations.
+- rm -rf migrations - Removes the migrations folder incase of failure. This is to restart but you will lose all data
 - flask db init - To initiate the migrations folder
 - flask db migrate -m "Write your message inside these quotation marks" - When you want to update your database, you must first migrate it. This will make your changes be manually reviewed before you put it into the database.
 - flask db upgrade - When you do this, you are now telling alembic (The application) to finalize and update the database.
