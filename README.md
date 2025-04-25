@@ -15,12 +15,13 @@ You will be introduced to creating the .env file to proceed with the installatio
 
 # Installation of the web app:
 1. Ensure you have Pycharm community or other IDE, and Docker Desktop. Download it if not
-2. Download the project repository from here. Then, open and copy the project's folder directory
-3. Open Windows CMD
-4. Write the command 'cd C:\[the directory of the project folder]\Midterm_app'
-5. Build the project to Docker with the command 'docker compose build'
-6. After the setup, check Docker Desktop images and container if the project is now available.
-7. Run the container to test.
+2. Download the project repository from here. Then, open and copy the project's folder directory from your IDE
+3. Ensure your project has a .venv and app/ and run/ is recognized as a python package
+4. Open Windows CMD
+5. Write the command 'cd C:\[the directory of the project folder]\Midterm_app'
+6. Build the project to Docker with the command 'docker compose build'
+7. After the setup, check Docker Desktop images and container if the project is now available.
+8. Run the container to test.
 
 # Commands:
 CMD Terminal database:
