@@ -1,0 +1,35 @@
+services:
+  web-app: # just a label
+    build: .
+    command: flask run --host=0.0.0.0 --port=5000
+    ports:
+      - "5100:5000" # left is the local machine, right is the container
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/home/app
+      - FLASK_ENV=${CONFIG_ENV}
+      - DATABASE_URL=${CONTAINER_DATABASE_URL}
+    depends_on:
+      app-db:
+        condition: service_healthy
+
+  app-db: # just a label
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_SECRET_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    volumes:
+      - app_db_data:/var/lib/postgresql/data
+    ports:
+      - "1234:5432" # not suitable for prod. Must be removed entirely for production.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USERNAME} -d $${POSTGRES_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  app_db_data:

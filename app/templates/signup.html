@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .Signup-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            transition: border-color 0.3s ease;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #26a69a;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="Signup-container">
+        <h1>Signup</h1>
+        <form method="POST" action="{{ url_for('auth.register')}}">
+            <label for="Full Name">Full name:</label>
+            <input type="text" name="full_name" id="Full Name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>
