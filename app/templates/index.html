@@ -11,11 +11,11 @@
         }
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
         }
         header {
-            background-color: #80cbc4;
-            height: 100px;
+            background-color: #004080;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -44,7 +44,8 @@
             text-transform: uppercase;
         }
         .nav_area li button:hover {
-            background-color: #00796b;
+            background-color: #bbdefb;
+            color: #004080;
         }
         .logo {
             color: white;
@@ -54,7 +55,7 @@
 <body>
     <header>
             <div class="logo">
-                <h2>THE portal</h2>
+                <h2>🏫 THE Portal</h2>
             </div>
                 <ul class="nav_area">
                     <li><a href={{url_for('auth.signin_page')}}><button type = "button" class = "login">Login</button></a></li>

@@ -1,6 +1,8 @@
-from os import environ, path
+import os
+from os import environ
 
 from dotenv import load_dotenv
+from pathlib import Path
 
 """
     Settings.py is our configuration script that loads the .env variables
@@ -8,15 +10,13 @@ from dotenv import load_dotenv
 """
 
 
-def load_env():
-    try:
-        basedir = path.normpath(path.dirname(__file__))
-        dotenv_path = load_dotenv(path.join(basedir, "..", '.env'))
-    except Exception as e:
-        print(f"[WARNING] - .env file could not be loaded at {dotenv_path}")
-
-
-load_env()
+if not os.environ.get("SECRET_KEY"):
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path)
+        print("[INFO] Loaded local .env for development.")
+    else:
+        print("[INFO] No .env file found. Skipping local env load.")
 
 
 class Config:

@@ -2,9 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Account Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        }
+        header {
+            background-color: #004080;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-size: cover;
+            background-position: center center;
+            padding: 0 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .nav_area {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+        .nav_area .form {
+            display: inline-b
+        }
+        .nav_area button {
+            background: none ;
+            border: none;
+            color: white;
+            text-decoration: none;
+            padding: 8px 24px;
+            font-family: poppins;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        .nav_area button:hover {
+            background-color: #bbdefb;
+            color: #004080;
+        }
+        .Logo {
+            color: white;
+        }
+    </style>
 </head>
 <body>
-
+    <header>
+        <div class="Logo">
+            <h2>🏫 THE Portal</h2>
+        </div>
+            <div class="nav_area">
+                <form method="POST" action="{{ url_for(auth.logout)}}">
+                     <button type="submit">Logout</button>
+                </form>
+            </div>
+    </header>
 </body>
 </html>

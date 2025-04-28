@@ -12,6 +12,12 @@ class CRUDMixin:
         return result.scalar_one_or_none()
 
     @classmethod
+    def get_by_email(cls, db: Session, email: str) -> Optional[Any]:
+        stmt = select(cls.model).where(cls.model.email == email)
+        result = db.execute(stmt).scalar_one_or_none()
+        return result
+
+    @classmethod
     def get_fields(cls, db: Session, id: Any, *fields: str) -> List[Any]:
         valid_fields = {column.name for column in cls.model.__table__.columns}
         for field in fields:

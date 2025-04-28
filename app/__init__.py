@@ -1,3 +1,4 @@
+import os
 from os import environ
 
 from flask import Flask
@@ -12,12 +13,15 @@ def create_app(config_class=None):
     app = Flask(__name__)
 
     if config_class is None:
-        config_class = environ.get('CONFIG_ENV', 'development').lower()
+        config_class = os.getenv('CONFIG_ENV').lower()
+        print(config_class)
 
     match config_class:
         case "development":
             app.config.from_object(DevConfig)
+            app.config["SESSION_COOKIE_NAME"] = os.getenv("SESSION_COOKIE_NAME", "web_app_session")
             db.init_app(app)
+            print(app.config.get("SESSION_COOKIE_NAME"))
         case "testing":
             app.config.from_object(TestConfig)
             db.init_app(app)

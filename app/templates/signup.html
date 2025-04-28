@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
         body {
-            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
-            margin: 50px;
         }
         .Signup-container {
             background: white;
@@ -19,6 +24,13 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
+        }
+        .form-group {
+            margin-top: 15px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
         }
         input[type="text"],
         input[type="email"],
@@ -33,15 +45,44 @@
             font-size: 16px;
             box-sizing: border-box;
         }
+        button {
+            background-color: #004080;
+            color: white;
+        }
         h1 {
-            color: #26a69a;
+            color: #004080;
             text-align: center;
+        }
+        .notification-is-danger {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+        a {
+            color: #004080;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="Signup-container">
         <h1>Signup</h1>
+        {% with messages = get_flashed_messages() %}
+                {% if messages %}
+            <div class="notification-is-danger">
+                {{ messages[0] }}..
+            </div>
+                {% endif %}
+                {% endwith %}
         <form method="POST" action="{{ url_for('auth.register')}}">
             <label for="Full Name">Full name:</label>
             <input type="text" name="full_name" id="Full Name" required>
@@ -52,7 +93,11 @@
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required>
 
+            <label for="confirm_pass">Confirm Password:</label>
+            <input type="password" name="password" id="confirm_pass" required>
+
             <button type="submit">Register</button>
+            <p>Already have an account? <a href="LOGIN_PANEL.html">Login</a></p>
         </form>
     </div>
 </body>
