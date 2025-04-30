@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Login</title>
     <style>
@@ -15,7 +16,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
+            font-family: 'Nunito', sans-serif;
         }
         .login-container {
             background: white;
@@ -34,7 +35,7 @@
         }
         input[type="email"],
         input[type="password"],
-        button {
+        button, .button {
             width: 100%;
             padding: 12px;
             margin-top: 8px;
@@ -44,9 +45,10 @@
             font-size: 16px;
             box-sizing: border-box;
         }
-        button {
+        button, .button {
             background-color: #004080;
             color: white;
+            margin-top: 20px
         }
         h1 {
             color: #004080;
@@ -88,14 +90,17 @@
                 {% endif %}
                 {% endwith %}
         <form method="POST" action="{{ url_for('auth.login')}}">
-            <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
+            {{ form.hidden_tag() }}
 
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
+            <label for="{{ form.email.id }}">Email:</label>
+            {{ form.email(id="email", class="input", required=True) }}
 
-            <button type="submit">Login</button>
-            <p>Don't have an account? <a href="LOGIN_PANEL.html">Sign Up</a></p>
+            <label for="{{ form.password.id }}">Password:</label>
+            {{ form.password(id="password", class="input", required=True) }}
+
+            {{ form.submit(class="button") }}
+
+            <p>Don't have an account? <a href="{{url_for('auth.register')}}">Sign Up</a></p>
         </form>
     </div>
 </body>

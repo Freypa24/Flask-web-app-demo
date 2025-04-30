@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Account Dashboard</title>
     <style>
@@ -10,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
         }
         header {
@@ -21,7 +22,7 @@
             justify-content: space-between;
             background-size: cover;
             background-position: center center;
-            padding: 0 30px;
+            padding: 0 100px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .nav_area {
@@ -38,7 +39,7 @@
             color: white;
             text-decoration: none;
             padding: 8px 24px;
-            font-family: poppins;
+            font-family: 'Nunito';
             font-size: 16px;
             text-transform: uppercase;
         }
@@ -49,6 +50,34 @@
         .Logo {
             color: white;
         }
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .info-group {
+            margin-bottom: 15px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .info-value {
+            margin-top: 5px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -57,10 +86,24 @@
             <h2>🏫 THE Portal</h2>
         </div>
             <div class="nav_area">
-                <form method="POST" action="{{ url_for(auth.logout)}}">
+                <form method="POST" action="{{ url_for('auth.logout')}}">
                      <button type="submit">Logout</button>
                 </form>
             </div>
     </header>
+
+    <div class="dashboard-container">
+         <div class="card">
+            <h2>Welcome, {{ user.full_name }}</h2>
+            <div class="info-group">
+                <div class="info-label">Email:</div>
+                <div class="info-value">{{ user.email }}</div>
+            </div>
+            <div class="info-group">
+                <div class="info-label">Account Created:</div>
+                <div class="info-value">{{ user.date_of_creation }}</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

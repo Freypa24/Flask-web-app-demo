@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Register</title>
     <style>
@@ -15,7 +16,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
+            font-family: 'Nunito', sans-serif;
         }
         .Signup-container {
             background: white;
@@ -35,7 +36,7 @@
         input[type="text"],
         input[type="email"],
         input[type="password"],
-        button {
+        button, .button {
             width: 100%;
             padding: 12px;
             margin-top: 8px;
@@ -45,9 +46,10 @@
             font-size: 16px;
             box-sizing: border-box;
         }
-        button {
+        button, .button {
             background-color: #004080;
             color: white;
+            margin-top: 20px
         }
         h1 {
             color: #004080;
@@ -84,20 +86,23 @@
                 {% endif %}
                 {% endwith %}
         <form method="POST" action="{{ url_for('auth.register')}}">
-            <label for="Full Name">Full name:</label>
-            <input type="text" name="full_name" id="Full Name" required>
+            {{ form.hidden_tag() }}
+
+            <label for="Full_name">Full name:</label>
+            {{ form.full_name(id="Full_name", class="input", required=True) }}
 
             <label for="email">Email:</label>
-            <input type="email" name="email" id="email" required>
+            {{ form.email(id="email", class="input", required=True) }}
 
             <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
+            {{ form.password(id="password", class="input", required=True) }}
 
             <label for="confirm_pass">Confirm Password:</label>
-            <input type="password" name="password" id="confirm_pass" required>
+            {{ form.confirm_password(id="confirm_password", class="input", required=True) }}
 
-            <button type="submit">Register</button>
-            <p>Already have an account? <a href="LOGIN_PANEL.html">Login</a></p>
+            {{ form.submit(class="button") }}
+
+            <p>Already have an account? <a href="{{ url_for('auth.login')}}">Login</a></p>
         </form>
     </div>
 </body>

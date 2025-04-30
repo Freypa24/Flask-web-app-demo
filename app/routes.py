@@ -1,9 +1,10 @@
 import datetime
 
 from flask import Blueprint, render_template, make_response, request, redirect, jsonify, flash, url_for, session
+
 from app.database import db
 from app.extensions.user_crud import UserCRUD
-from app.extensions.class_form import SignupForm
+from app.extensions.class_form import SignupForm, SigninForm
 from app.models import auth_required
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -36,24 +37,10 @@ def get_user(user_id):
 auth_bp = Blueprint('auth', __name__, url_prefix="/auth")
 
 
-@auth_bp.route('/up', methods=["GET"])
-def signup_page():
-    if 'user_id' in session:
-        return redirect(url_for("auth.user_dashboard_page"))
-    return render_template("signup.html")
-
-
-@auth_bp.route('/in', methods=["GET"])
-def signin_page():
-    if 'user_id' in session:
-        return redirect(url_for("auth.user_dashboard_page"))
-    return render_template("signin.html")
-
-
 @auth_bp.route('/signout', methods=["POST"])
 @auth_required
 def logout():
-    if session['user_id']:
+    if 'user_id' in session:
         session.pop('user_id', None)
         session.pop('loggedIn', None)
         return redirect(url_for("page.index_page"))
@@ -63,24 +50,22 @@ def logout():
 def login():
     if 'user_id' in session:
         return redirect(url_for("auth.user_dashboard_page"))
-    if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
+
+    form = SigninForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
         existing_user = None
         error = None
 
-        if not email:
-            error = "Username field is empty"
-        elif not password:
-            error = "Password field is empty"
-        else:
-            try:
-                existing_user = UserCRUD.get_by_email(db.session, email)
-                if existing_user is None:
-                    error = "This account does not exist, kindly signup in"
-            except Exception as e:
-                print(f"An error occurred during query for the email at login: {e}")
-                error = "Internal error during login"
+        try:
+            existing_user = UserCRUD.get_by_email(db.session, email)
+            if existing_user is None:
+                error = "This account does not exist, kindly signup in"
+        except Exception as e:
+            print(f"An error occurred during query for the email at login: {e}")
+            error = "Internal error during login"
 
         if error is None:
             try:
@@ -97,7 +82,7 @@ def login():
 
         flash(error)
 
-        return render_template("signin.html")
+    return render_template("signin.html", form=form)
 
 
 @auth_bp.route('/signup', methods=["GET", "POST"])
@@ -105,20 +90,16 @@ def register():
     if 'user_id' in session:
         return redirect(url_for("auth.user_dashboard_page"))
 
-    if request.method == "POST":
-        full_name = request.form.get("full_name")
-        email = request.form.get("email")
-        password = request.form.get("password")
-        confirm_pass = request.form.get("confirm_pass")
-        error = None
+    form = SignupForm()
+    error = None
 
-        if not email:
-            error = "Email field is required"
-        elif not password:
-            error = "Password field is required"
-        elif not confirm_pass:
-            error = "Confirm your password is required"
-        elif password != confirm_pass:
+    if form.validate_on_submit():
+        full_name = form.full_name.data
+        email = form.email.data
+        password = form.password.data
+        confirm_pass = form.confirm_password.data
+
+        if password != confirm_pass:
             error = "Passwords do not match"
         else:
             try:
@@ -137,20 +118,27 @@ def register():
                                             "email": email,
                                             "password": hashed_pass,
                                             "date_of_creation": datetime.date.today()})
-                return redirect(url_for("auth.signin_page"))
+                return redirect(url_for("auth.login"))
             except Exception as e:
                 db.session.rollback()
                 error = f"An error occurred during user creation: {str(e)}"
 
         flash(error)
 
-        return render_template("signup.html")
+    elif request.method == 'POST':
+        for field_errors in form.errors.values():
+            for field_error in field_errors:
+                flash(field_error)
+                break
+
+    return render_template("signup.html", form=form)
 
 
 @auth_bp.route('/user/dashboard', methods=["GET"])
 @auth_required
 def user_dashboard_page():
-    return render_template('user_dashboard.html')
+    user = UserCRUD.get_one(db.session, session['user_id'])
+    return render_template('user_dashboard.html', user=user)
 
 
 template_bp = Blueprint('page', __name__, url_prefix="/")

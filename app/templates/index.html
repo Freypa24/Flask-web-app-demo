@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Home</title>
     <style>
@@ -10,7 +11,7 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
         }
         header {
@@ -39,7 +40,7 @@
             color: white;
             text-decoration: none;
             padding: 8px 24px;
-            font-family: poppins;
+            font-family: 'Nunito';
             font-size: 16px;
             text-transform: uppercase;
         }
@@ -58,8 +59,8 @@
                 <h2>🏫 THE Portal</h2>
             </div>
                 <ul class="nav_area">
-                    <li><a href={{url_for('auth.signin_page')}}><button type = "button" class = "login">Login</button></a></li>
-                    <li><a href={{url_for('auth.signup_page')}}><button type = "button" class = "signin">Signup</button></a></li>
+                    <li><a href={{url_for('auth.login')}}><button type = "button" class = "login">Login</button></a></li>
+                    <li><a href={{url_for('auth.register')}}><button type = "button" class = "signin">Signup</button></a></li>
                 </ul>
     </header>
     <div class="Content body">
