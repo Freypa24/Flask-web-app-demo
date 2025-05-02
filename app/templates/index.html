@@ -11,8 +11,10 @@
             box-sizing: border-box;
         }
         body {
+            min-height: 100vh;
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            background-attachment: fixed;
         }
         header {
             background-color: #004080;
@@ -23,7 +25,7 @@
             background-size: cover;
             background-position: center center;
             position: relative;
-            padding: 0 30px;
+            padding: 0 100px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
         .nav_area {
@@ -51,6 +53,31 @@
         .logo {
             color: white;
         }
+        .news-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .news-card {
+            background-color: white;
+            border-left: 6px solid #004080;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .news-card h2 {
+            color: #004080;
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+        .timestamp {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -63,9 +90,34 @@
                     <li><a href={{url_for('auth.register')}}><button type = "button" class = "signin">Signup</button></a></li>
                 </ul>
     </header>
-    <div class="Content body">
-        <h1></h1>
+    <div style="padding: 40px 100px;">
+    <h1 style="color: #004080; margin-bottom: 20px;">Welcome to THE Portal</h1>
+    <p style="font-size: 18px; color: #333; margin-bottom: 40px;">
+        Stay updated with the latest announcements and news from the platform.
+    </p>
 
+    <div class="news-feed">
+        <div class="news-card">
+            <h2>🎉 New Feature Released!</h2>
+            <p class="timestamp">May 2, 2025</p>
+            <p>Rate limiter is finally implemented to stop brute-force attacks and spam.</p>
+        </div>
+        <div class="news-card">
+            <h2>Update</h2>
+            <p class="timestamp">May 1, 2025</p>
+            <p>Created a script to initialize the first admin and workforce. Admin dashboard and workforce logic has been stable.</p>
+        </div>
+        <div class="news-card">
+            <h2>Update</h2>
+            <p class="timestamp">April 30, 2025</p>
+            <p>Fixed issues regarding unstable and incomplete routes and models. Now, the model design is clearer and routes has been improved.</p>
+        </div>
+        <div class="news-card">
+            <h2>Update</h2>
+            <p class="timestamp">April 29, 2025</p>
+            <p>Finalized the user dashboard page and route to display individual user's details.</p>
+        </div>
     </div>
+</div>
 </body>
 </html>

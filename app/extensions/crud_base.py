@@ -7,8 +7,15 @@ class CRUDMixin:
     model = None
 
     @classmethod
-    def get_one(cls, db: Session, id: Any) -> Optional[Any]:
-        result = db.execute(select(cls.model).where(cls.model.user_id == id))
+    def get(cls, db: Session, id: Any, id_field: str = "id", *fields: str, ) -> List[Any]:
+        stmt = select(cls.model)
+        column = getattr(cls.model, id_field)
+        return None
+
+    @classmethod
+    def get_one(cls, db: Session, id: Any, id_field: str = "id") -> Optional[Any]:
+        column = getattr(cls.model, id_field)
+        result = db.execute(select(cls.model).where(column == id))
         return result.scalar_one_or_none()
 
     @classmethod
@@ -31,8 +38,14 @@ class CRUDMixin:
         return result
 
     @classmethod
-    def get_all(cls, db: Session) -> List[Any]:
-        return db.query(cls.model).all()
+    def get_all(cls, db: Session, filters: Dict = None) -> List[Any]:
+        stmt = select(cls.model)
+        if filters:
+            for key, value in filters.items():
+                column = getattr(cls.model, key, None)
+                if column is not None:
+                    stmt = stmt.where(column == value)
+        return db.scalars(stmt).all()
 
     @classmethod
     def create(cls, db: Session, obj_in: Dict[str, Any]) -> Any:

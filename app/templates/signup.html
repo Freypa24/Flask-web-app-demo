@@ -73,6 +73,14 @@
         a:hover {
             text-decoration: underline;
         }
+        small {
+            display: block;
+            margin-top: 5px;
+        }
+        input[type="password"]:focus {
+            outline: none;
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -96,14 +104,63 @@
 
             <label for="password">Password:</label>
             {{ form.password(id="password", class="input", required=True) }}
+            <small id="password-strength-text" style="font-size: 12">Must be combination of letters, numbers, symbols, and capital letters.</small>
 
             <label for="confirm_pass">Confirm Password:</label>
             {{ form.confirm_password(id="confirm_password", class="input", required=True) }}
-
+            <div style="margin-top: 5px;display: flex; align-items: center; gap: 5px;">
+                <input type="checkbox" id="toggle-passwords"> <label for="toggle-passwords" style="font-size: 12px;  margin: 0;">Show Passwords</label>
+            </div>
             {{ form.submit(class="button") }}
 
             <p>Already have an account? <a href="{{ url_for('auth.login')}}">Login</a></p>
         </form>
     </div>
+
+    <script>
+        const passwordInput = document.getElementById("password");
+        const strengthText = document.getElementById('password-strength-text');
+
+        document.getElementById('toggle-passwords').addEventListener('change', function () {
+            document.getElementById('password').type = this.checked ? 'text' : 'password';
+            document.getElementById('confirm_password').type = this.checked ? 'text' : 'password';
+        });
+
+        passwordInput.addEventListener('input', function () {
+            const value = passwordInput.value;
+            let strength = 0;
+
+            if (value.length >= 8) strength += 1;
+            if (/[0-9]/.test(value)) strength += 1;
+            if (/[a-z]/.test(value)) strength += 1;
+            if (/[A-Z]/.test(value)) strength += 1;
+            if (/[^0-9a-zA-Z]/.test(value)) strength += 1;
+
+            if (value.length === 0) {
+                passwordInput.style.borderColor = '#e0e0e0';
+                strengthText.textContent = '';
+            } else if (strength <= 1) {
+                passwordInput.style.borderColor = '#e53935';  // red
+                strengthText.textContent = 'Very Weak';
+                strengthText.style.color = '#e53935';
+            } else if (strength === 2) {
+                passwordInput.style.borderColor = '#e65100 ';  // Orange
+                strengthText.textContent = 'Weak';
+                strengthText.style.color = '#e65100';
+            } else if (strength === 3) {
+                passwordInput.style.borderColor = '#ffca28';  // yellow
+                strengthText.textContent = 'Moderate';
+                strengthText.style.color = '#ffca28';
+            } else if (strength === 4) {
+                passwordInput.style.borderColor = '#43a047';  // green
+                strengthText.textContent = 'Strong';
+                strengthText.style.color = '#43a047';
+            } else if (strength === 5) {
+                passwordInput.style.borderColor = '#43a047';  // green
+                strengthText.textContent = 'Very Strong';
+                strengthText.style.color = '#43a047';
+            }
+        });
+    </script>
 </body>
 </html>

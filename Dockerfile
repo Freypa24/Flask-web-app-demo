@@ -10,7 +10,8 @@ COPY ./app ./app
 COPY ./migrations ./migrations
 COPY ./app/requirements.txt .
 
-ENV FLASK_APP=app/run
+ENV FLASK_APP=app.run:create_app
+ENV FLASK_ENV=development
 
 ENV VIRTUAL_ENV=/home/app/venv
 RUN python -m venv $VIRTUAL_ENV

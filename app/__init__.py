@@ -5,7 +5,7 @@ from flask import Flask
 from sqlalchemy import text
 
 from app.database import db, migrate
-from app.routes import user_bp, template_bp, auth_bp
+from app.routes import admin_bp, template_bp, auth_bp, apply_rate_limit
 from app.settings import DevConfig, TestConfig, ProdConfig
 
 
@@ -13,7 +13,7 @@ def create_app(config_class=None):
     app = Flask(__name__)
 
     if config_class is None:
-        config_class = os.getenv('CONFIG_ENV').lower()
+        config_class = environ.get('CONFIG_ENV').lower()
         print(config_class)
 
     match config_class:
@@ -34,6 +34,7 @@ def create_app(config_class=None):
     migrate.init_app(app, db)
 
     _register_blueprints(app)
+    apply_rate_limit(app)
 
     with app.app_context():
         try:
@@ -47,6 +48,6 @@ def create_app(config_class=None):
 
 
 def _register_blueprints(app):
-    app.register_blueprint(user_bp)
+    app.register_blueprint(admin_bp)
     app.register_blueprint(template_bp)
     app.register_blueprint(auth_bp)

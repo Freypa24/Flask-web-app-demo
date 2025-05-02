@@ -3,7 +3,7 @@ services:
     build: .
     command: flask run --host=0.0.0.0 --port=5000
     ports:
-      - "5100:5000" # left is the local machine, right is the container
+      - "5000:5000" # left is the local machine, right is the container
     env_file:
       - .env
     environment:

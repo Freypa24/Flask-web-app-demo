@@ -54,15 +54,20 @@
             color: #004080;
             text-align: center;
         }
-        .notification-is-danger {
-            background-color: #ffebee;
-            color: #c62828;
-            border: 1px solid #ef9a9a;
-            padding: 10px 15px;
+        .notification-is-success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
             border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .notification-is-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
         a {
             color: #004080;
@@ -75,20 +80,17 @@
     </style>
 </head>
 <body>
-
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
-
     <div class="login-container">
         <h1>Login</h1>
-        {% with messages = get_flashed_messages() %}
-                {% if messages %}
-            <div class="notification-is-danger">
-                {{ messages[0] }}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="notification-is-{{ category }}">
+                {{ message }}
             </div>
-                {% endif %}
-                {% endwith %}
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
         <form method="POST" action="{{ url_for('auth.login')}}">
             {{ form.hidden_tag() }}
 

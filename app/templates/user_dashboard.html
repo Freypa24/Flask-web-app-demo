@@ -95,6 +95,16 @@
     <div class="dashboard-container">
          <div class="card">
             <h2>Welcome, {{ user.full_name }}</h2>
+             <div class="info-group">
+                 <div class="info-label">Workforce:</div>
+                 <div class="info-value">
+                     {% if user.workforce %}
+                        {{ user.workforce.name }}
+                    {% else %}
+                        Not assigned
+                    {% endif %}
+                 </div>
+             </div>
             <div class="info-group">
                 <div class="info-label">Email:</div>
                 <div class="info-value">{{ user.email }}</div>

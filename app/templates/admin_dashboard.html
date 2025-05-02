@@ -2,9 +2,208 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        }
+        header {
+            background-color: #004080;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-size: cover;
+            background-position: center center;
+            padding: 0 100px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .nav_area {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+        .nav_area .form {
+            display: inline-block;
+        }
+        .nav_area button {
+            background: none ;
+            border: none;
+            color: white;
+            text-decoration: none;
+            padding: 8px 24px;
+            font-family: 'Nunito';
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        .nav_area button:hover {
+            background-color: #bbdefb;
+            color: #004080;
+        }
+        .Logo {
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            gap: 20px;
+            padding: 0 20px 40px;
+        }
+        .left-panel {
+            flex: 1;
+            overflow-x: auto;
+        }
+
+        .right-panel {
+            width: 320px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        h3 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #004080;
+            color: white;
+        }
+
+        .remove-btn {
+            padding: 6px 12px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background-color: #b71c1c;
+        }
+
+        .right-panel h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #004080;
+            text-align: center;
+        }
+
+        form.add-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form.add-form select {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        form.add-form button {
+            padding: 10px 16px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        form.add-form button:hover {
+            background-color: #00264d;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            .right-panel {
+                width: 100%;
+                position: relative;
+                top: unset;
+            }
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <div class="Logo">
+            <h2>🏫 THE Portal</h2>
+        </div>
+            <div class="nav_area">
+                <form method="POST" action="{{ url_for('auth.logout')}}">
+                     <button type="submit">Logout</button>
+                </form>
+            </div>
+    </header>
 
+    <div class="container">
+        <!-- Employee Table -->
+        <div class="left-panel">
+            <h2>Workforce Dashboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp in employees %}
+                    <tr>
+                        <td>{{ emp.id }}</td>
+                        <td>{{ emp.full_name }}</td>
+                        <td>{{ emp.role }}</td>
+                        <td>{{ emp.email }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('admin.remove_employee') }}">
+                                {{ remove_forms[emp.id].hidden_tag() }}
+                                {{ remove_forms[emp.id].submit(class="remove-btn") }}
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add Employee Panel -->
+        <div class="right-panel">
+            <h3>Add to Workforce</h3>
+            <form method="POST" action="{{ url_for('admin.add_employee') }}" class="add-form">
+                {{ add_form.hidden_tag() }}
+                {{ add_form.employee_id() }}
+                {{ add_form.submit() }}
+            </form>
+        </div>
+    </div>
 </body>
 </html>
